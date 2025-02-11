@@ -1,11 +1,7 @@
 import "./pages/index.css";
 import { initialCards } from "./scripts/cards";
 import { createCard, deleteCard } from "./components/card";
-import {
-  openModal,
-  closeModal,
-  addModalListeners,
-} from "./components/modal";
+import { openModal, closeModal, addModalListeners } from "./components/modal";
 
 const cardTemplate = document.querySelector("#card-template").content;
 const popups = document.querySelectorAll(".popup");
@@ -42,7 +38,7 @@ AddCardButton.addEventListener("click", function (evt) {
 function openPopupImageModal(link, name) {
   const imagePopupPicture = imagePopup.querySelector(".popup__image");
   const imagePopupCaption = imagePopup.querySelector(".popup__caption");
-  
+
   imagePopupCaption.textContent = name;
   imagePopupPicture.src = link;
   imagePopupPicture.alt = "Изображение " + name;

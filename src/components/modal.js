@@ -18,14 +18,12 @@ function openModal(modalItem) {
 function addModalListeners(modalItem) {
   const closeButton = modalItem.querySelector(".popup__close");
   closeButton.addEventListener("click", () => closeModal(modalItem));
-  
+
   modalItem.addEventListener("mousedown", (evt) => {
-    if(evt.target.classList.contains('popup')) {
+    if (evt.target.classList.contains("popup")) {
       closeModal(modalItem);
     }
   });
 }
-
-
 
 export { openModal, closeModal, addModalListeners };
