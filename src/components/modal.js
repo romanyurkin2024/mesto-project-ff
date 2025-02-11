@@ -26,17 +26,6 @@ function addModalListeners(modalItem) {
   });
 }
 
-function openPopupImageModal(link, name) {
-  const imagePopup = document.querySelector(".popup_type_image");
-  const imagePopupPicture = imagePopup.querySelector(".popup__image");
-  const imagePopupCaption = imagePopup.querySelector(".popup__caption");
-  
-  imagePopupCaption.textContent = name;
-  imagePopupPicture.src = link;
-  imagePopupPicture.alt = "Изображение " + name;
-
-  openModal(imagePopup);
-}
 
 
-export { openModal, closeModal, addModalListeners, openPopupImageModal };
+export { openModal, closeModal, addModalListeners };

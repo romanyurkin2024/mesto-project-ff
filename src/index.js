@@ -4,7 +4,6 @@ import { createCard, deleteCard } from "./components/card";
 import {
   openModal,
   closeModal,
-  openPopupImageModal,
   addModalListeners,
 } from "./components/modal";
 
@@ -13,6 +12,7 @@ const popups = document.querySelectorAll(".popup");
 const placesList = document.querySelector(".places__list");
 const popupEdit = document.querySelector(".popup_type_edit");
 const popupNewCard = document.querySelector(".popup_type_new-card");
+const imagePopup = document.querySelector(".popup_type_image");
 const profileEditButton = document.querySelector(".profile__edit-button");
 const AddCardButton = document.querySelector(".profile__add-button");
 const profileTitle = document.querySelector(".profile__title");
@@ -38,6 +38,17 @@ profileEditButton.addEventListener("click", (evt) => {
 AddCardButton.addEventListener("click", function (evt) {
   openModal(popupNewCard);
 });
+
+function openPopupImageModal(link, name) {
+  const imagePopupPicture = imagePopup.querySelector(".popup__image");
+  const imagePopupCaption = imagePopup.querySelector(".popup__caption");
+  
+  imagePopupCaption.textContent = name;
+  imagePopupPicture.src = link;
+  imagePopupPicture.alt = "Изображение " + name;
+
+  openModal(imagePopup);
+}
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
