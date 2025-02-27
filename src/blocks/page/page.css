@@ -1,6 +1,38 @@
-@import url('./__content/page__content.css');
-@import url('./__section/page__section.css');
+@import url("./__content/page__content.css");
+@import url("./__section/page__section.css");
+* {
+  outline: none;
+}
 
 .page {
   background: #000;
+}
+
+.form__field {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.form__input-error {
+  display: none;
+  position: absolute;
+  bottom: -30px;
+  left: 0;
+  width: 100%;
+  font-size: 12px;
+  color: #FF0000;
+  line-height: 1.2;
+  white-space: normal; /* Позволяет ошибке переноситься на новую строку */
+  word-wrap: break-word; /* Разбивает длинные слова */
+}
+
+.popup__error_visible {
+  display: block;
+}
+
+.popup__button_disabled {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #000000;
+  opacity: 0.2;
 }

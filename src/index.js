@@ -2,6 +2,8 @@ import "./pages/index.css";
 import { initialCards } from "./scripts/cards";
 import { createCard, deleteCard } from "./components/card";
 import { openModal, closeModal, addModalListeners } from "./components/modal";
+import { clearValidation, enableValidation } from "./scripts/enableValidation";
+import { getAllCards, getUserData } from "./scripts/api";
 
 const cardTemplate = document.querySelector("#card-template").content;
 const popups = document.querySelectorAll(".popup");
@@ -12,6 +14,7 @@ const imagePopup = document.querySelector(".popup_type_image");
 const profileEditButton = document.querySelector(".profile__edit-button");
 const AddCardButton = document.querySelector(".profile__add-button");
 const profileTitle = document.querySelector(".profile__title");
+const profileImage = document.querySelector(".profile__image");
 const profileDescription = document.querySelector(".profile__description");
 const profileFormElement = document.forms["edit-profile"];
 const nameInput = profileFormElement.name;
@@ -19,19 +22,36 @@ const jobInput = profileFormElement.description;
 const newCardFormElement = document.forms["new-place"];
 const newPlaceName = newCardFormElement["place-name"];
 const newPlaceLink = newCardFormElement["link"];
+const formConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
+getUserData().then((data) => {
+  profileTitle.textContent = data.name;
+  profileDescription.textContent = data.about;
+  profileImage.style.backgroundImage = `url(${data.avatar})`;
+});
 
 popups.forEach((popup) => {
   addModalListeners(popup);
 });
 
-profileEditButton.addEventListener("click", (evt) => {
+profileEditButton.addEventListener("click", () => {
+  clearValidation(profileFormElement, formConfig);
+
   jobInput.value = profileDescription.textContent;
   nameInput.value = profileTitle.textContent;
 
   openModal(popupEdit);
 });
 
-AddCardButton.addEventListener("click", function (evt) {
+AddCardButton.addEventListener("click", () => {
+  clearValidation(newCardFormElement, formConfig);
   openModal(popupNewCard);
 });
 
@@ -73,3 +93,5 @@ initialCards.forEach((item) => {
     createCard(item, { deleteCard, cardTemplate, openPopupImageModal })
   );
 });
+
+enableValidation(formConfig);
