@@ -33,4 +33,51 @@ function getUserData() {
     });
 }
 
-export { getAllCards, getUserData };
+function updateProfile(name, about) {
+  return fetch(`${PATH}/users/me`, {
+    method: "PATCH",
+    headers: {
+      authorization: `${TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      about: about,
+    }),
+  }).then(res => res.json())
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
+function createNewCard(name, link) {
+  return fetch(`${PATH}/cards`, {
+    method: "POST",
+    headers: {
+      authorization: `${TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      name: name,
+      link: link,
+    }),
+  }).then(res => res.json())
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
+function deleteCard(cardId) {
+  return fetch(`${PATH}/cards/${cardId}`, {
+    method: "DELETE",
+    headers: {
+      authorization: `${TOKEN}`,
+      "Content-Type": "application/json",
+    },
+  }).then(res => res.json())
+  .catch((error) => {
+    console.log(error);
+  });
+}
+
+export { getAllCards, getUserData, updateProfile, createNewCard, deleteCard };

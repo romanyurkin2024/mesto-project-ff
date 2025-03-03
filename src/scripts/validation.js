@@ -23,12 +23,12 @@ const hasInvalidInput = (inputElements) => {
   });
 };
 
-function enableValidation(forms) {
-  const formElements = document.querySelectorAll(forms.formSelector);
+function enableValidation(formConfig) {
+  const formElements = document.querySelectorAll(formConfig.formSelector);
   formElements.forEach((formElement) => {
-    const buttonForm = formElement.querySelector(forms.submitButtonSelector);
-    const inputElements = formElement.querySelectorAll(forms.inputSelector);
-    disablePopupButton(buttonForm, forms.inactiveButtonClass);
+    const buttonForm = formElement.querySelector(formConfig.submitButtonSelector);
+    const inputElements = formElement.querySelectorAll(formConfig.inputSelector);
+    disablePopupButton(buttonForm, formConfig.inactiveButtonClass);
 
     inputElements.forEach((inputElement) => {
       const errorElement = formElement.querySelector(
@@ -36,21 +36,27 @@ function enableValidation(forms) {
       );
 
       inputElement.addEventListener("input", function (evt) {
+        if (inputElement.validity.patternMismatch) {
+          inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+        } else {
+          inputElement.setCustomValidity("");
+        } 
+        
         if (!evt.target.validity.valid) {
-          evt.target.classList.add(forms.inputErrorClass);
+          evt.target.classList.add(formConfig.inputErrorClass);
           showError(
             errorElement,
             evt.target.validationMessage,
-            forms.errorClass
+            formConfig.errorClass
           );
           if (hasInvalidInput(Array.from(inputElements))) {
-            disablePopupButton(buttonForm, forms.inactiveButtonClass);
+            disablePopupButton(buttonForm, formConfig.inactiveButtonClass);
           }
         } else {
-          evt.target.classList.remove(forms.inputErrorClass);
-          hideError(errorElement, forms.errorClass);
+          evt.target.classList.remove(formConfig.inputErrorClass);
+          hideError(errorElement, formConfig.errorClass);
           if (!hasInvalidInput(Array.from(inputElements))) {
-            enablePopupButton(buttonForm, forms.inactiveButtonClass);
+            enablePopupButton(buttonForm, formConfig.inactiveButtonClass);
           }
         }
       });

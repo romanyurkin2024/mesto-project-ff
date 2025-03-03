@@ -1,9 +1,14 @@
 import "./pages/index.css";
-import { initialCards } from "./scripts/cards";
-import { createCard, deleteCard } from "./components/card";
+import { createCard } from "./components/card";
 import { openModal, closeModal, addModalListeners } from "./components/modal";
-import { clearValidation, enableValidation } from "./scripts/enableValidation";
-import { getAllCards, getUserData } from "./scripts/api";
+import { clearValidation, enableValidation } from "./scripts/validation";
+import {
+  getAllCards,
+  getUserData,
+  updateProfile,
+  createNewCard,
+  deleteCard,
+} from "./scripts/api";
 
 const cardTemplate = document.querySelector("#card-template").content;
 const popups = document.querySelectorAll(".popup");
@@ -68,18 +73,22 @@ function openPopupImageModal(link, name) {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-
-  profileTitle.textContent = nameInput.value;
-  profileDescription.textContent = jobInput.value;
+  updateProfile(nameInput.value, jobInput.value).then(() => {
+    profileDescription.textContent = jobInput.value;
+    profileTitle.textContent = nameInput.value;
+  });
   closeModal(evt.target.closest(".popup"));
 }
 
 function handleAddCardFormSubmit(evt) {
   evt.preventDefault();
-  const newCard = { name: newPlaceName.value, link: newPlaceLink.value };
-  placesList.prepend(
-    createCard(newCard, { deleteCard, cardTemplate, openPopupImageModal })
-  );
+
+  createNewCard(newPlaceName.value, newPlaceLink.value).then((res) => {
+    placesList.prepend(
+      createCard(res, { deleteCard, cardTemplate, openPopupImageModal })
+    );
+  });
+
   newCardFormElement.reset();
   closeModal(evt.target.closest(".popup"));
 }
@@ -87,11 +96,15 @@ function handleAddCardFormSubmit(evt) {
 profileFormElement.addEventListener("submit", handleProfileFormSubmit);
 newCardFormElement.addEventListener("submit", handleAddCardFormSubmit);
 
-// @todo: Вывести карточки на страницу
-initialCards.forEach((item) => {
-  placesList.append(
-    createCard(item, { deleteCard, cardTemplate, openPopupImageModal })
-  );
+Promise.all([getAllCards(), getUserData()]).then((res) => {
+  const [cards, userData] = res;
+  cards.forEach((item) => {
+    if (userData._id === item.owner._id) {
+      placesList.append(
+        createCard(item, { deleteCard, cardTemplate, openPopupImageModal })
+      );
+    }
+  });
 });
 
 enableValidation(formConfig);

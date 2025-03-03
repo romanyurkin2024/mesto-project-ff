@@ -41,12 +41,12 @@
         <form class="popup__form" name="edit-profile" novalidate>
           <div class="form__field">
             <input type="text" name="name" id="name" class="popup__input popup__input_type_name" placeholder="Имя"
-              minlength="2" maxlength="40" pattern="[A-Za-zА-Яа-яЁё\s\-]+" required>
+              minlength="2" maxlength="40" pattern="[A-Za-zА-Яа-яЁё\s\-]+" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
             <span class="form__input-error name__input-error"></span>
           </div>
           <div class="form__field">
             <input type="text" name="description" id="description" class="popup__input popup__input_type_description"
-              placeholder="Занятие" minlength="2" maxlength="200" pattern="[A-Za-zА-Яа-яЁё\s\-]+" required>
+              placeholder="Занятие" minlength="2" maxlength="200" pattern="[A-Za-zА-Яа-яЁё\s\-]+" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
             <span class="form__input-error description__input-error"></span>
           </div>
           <button type="submit" class="button popup__button">Сохранить</button>
@@ -60,7 +60,7 @@
         <form class="popup__form" name="new-place" novalidate>
           <div class="form__field">
             <input type="text" name="place-name" id="place-name" class="popup__input popup__input_type_card-name"
-              placeholder="Название" pattern="[A-Za-zА-Яа-яЁё\s\-]+" required>
+              placeholder="Название" pattern="[A-Za-zА-Яа-яЁё\s\-]+" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
             <span class="form__input-error place-name__input-error"></span>
           </div>
           <div class="form__field">
@@ -88,7 +88,10 @@
       <div class="card__description">
         <h2 class="card__title">
         </h2>
-        <button type="button" class="card__like-button"></button>
+        <div class="card__like-block">
+          <button type="button" class="card__like-button"></button>
+          <span class="card__like-counter">230</span>
+        </div>
       </div>
     </li>
   </template>
