@@ -66,7 +66,7 @@ profileEditButton.addEventListener("click", () => {
 
 profileImage.addEventListener("click", () => {
   openModal(popupNewAvatar);
-})
+});
 
 addCardButton.addEventListener("click", () => {
   clearValidation(newCardFormElement, formConfig);
@@ -101,42 +101,69 @@ function handleDeleteCard(evt) {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  updateProfile(nameInput.value, jobInput.value).then(() => {
-    profileDescription.textContent = jobInput.value;
-    profileTitle.textContent = nameInput.value;
-  });
-  closeModal(evt.target.closest(".popup"));
+  const popupButton = evt.target.querySelector(".popup__button");
+  renderButtonLoading(true, popupButton);
+
+  updateProfile(nameInput.value, jobInput.value)
+    .then((res) => {
+      profileDescription.textContent = jobInput.value;
+      profileTitle.textContent = nameInput.value;
+      closeModal(evt.target.closest(".popup"));
+    })
+    .finally(() => {
+      renderButtonLoading(false, popupButton);
+    });
+}
+
+function renderButtonLoading(isRender, formButton) {
+  if (isRender) {
+    formButton.textContent = "Сохранение...";
+  } else {
+    formButton.textContent = "Сохранить";
+  }
 }
 
 function handleAddNewAvatar(evt) {
   evt.preventDefault();
-
+  const popupButton = evt.target.querySelector(".popup__button");
+  renderButtonLoading(true, popupButton);
   const avatarLink = newAvatarFormElement["avatar-link"].value;
-  changeAvatar(avatarLink).then((res) => {
-    closeModal(evt.target.closest(".popup"));
-    profileImage.style.backgroundImage = `url(${res.avatar})`;
-    newAvatarFormElement.reset();
-  }).catch((error) => {
-    alert(error);
-  });
+  changeAvatar(avatarLink)
+    .then((res) => {
+      closeModal(evt.target.closest(".popup"));
+      profileImage.style.backgroundImage = `url(${res.avatar})`;
+      newAvatarFormElement.reset();
+    })
+    .catch((error) => {
+      alert(error);
+    })
+    .finally(() => {
+      renderButtonLoading(false, popupButton);
+    });
 }
 
 function handleAddCardFormSubmit(evt) {
   evt.preventDefault();
 
-  createNewCard(newPlaceName.value, newPlaceLink.value).then((res) => {
-    placesList.prepend(
-      createCard(res, res.owner._id, {
-        cardTemplate,
-        openPopupImageModal,
-        openPopupConfirmationModal,
-        handleLikeClick: handleLikeClick(likeCard, unlikeCard),
-      })
-    );
-  });
+  const popupButton = evt.target.querySelector(".popup__button");
+  renderButtonLoading(true, popupButton);
 
-  newCardFormElement.reset();
-  closeModal(evt.target.closest(".popup"));
+  createNewCard(newPlaceName.value, newPlaceLink.value)
+    .then((res) => {
+      placesList.prepend(
+        createCard(res, res.owner._id, {
+          cardTemplate,
+          openPopupImageModal,
+          openPopupConfirmationModal,
+          handleLikeClick: handleLikeClick(likeCard, unlikeCard),
+        })
+      );
+      newCardFormElement.reset();
+      closeModal(evt.target.closest(".popup"));
+    })
+    .finally(() => {
+      renderButtonLoading(false, popupButton);
+    });
 }
 
 profileFormElement.addEventListener("submit", handleProfileFormSubmit);

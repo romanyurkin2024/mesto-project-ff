@@ -7,7 +7,7 @@ const API_CONFIG = {
 };
 
 function getInitialCards() {
-  return fetch(`${API_CONFIG.baseUrl}/cards`, {headers: API_CONFIG.headers})
+  return fetch(`${API_CONFIG.baseUrl}/cards`, { headers: API_CONFIG.headers })
     .then((res) => {
       if (res.ok) {
         return res.json();
@@ -20,7 +20,9 @@ function getInitialCards() {
 }
 
 function getUserData() {
-  return fetch(`${API_CONFIG.baseUrl}/users/me`, {headers: API_CONFIG.headers})
+  return fetch(`${API_CONFIG.baseUrl}/users/me`, {
+    headers: API_CONFIG.headers,
+  })
     .then((res) => {
       if (res.ok) {
         return res.json();
@@ -128,10 +130,11 @@ function changeAvatar(avatarLink) {
     body: JSON.stringify({
       avatar: avatarLink,
     }),
-  }).then((res) => res.json())
-  .catch((error) => {
-    console.log(error);
-  });
+  })
+    .then((res) => res.json())
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 export {

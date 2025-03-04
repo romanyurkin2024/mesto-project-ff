@@ -27,7 +27,12 @@ const handleLikeClick =
 function createCard(
   item,
   userId,
-  { cardTemplate, openPopupImageModal, openPopupConfirmationModal, handleLikeClick }
+  {
+    cardTemplate,
+    openPopupImageModal,
+    openPopupConfirmationModal,
+    handleLikeClick,
+  }
 ) {
   const newCardElement = cardTemplate.querySelector(".card").cloneNode(true);
   const cardImage = newCardElement.querySelector(".card__image");
@@ -50,7 +55,9 @@ function createCard(
     openPopupImageModal(item.link, item.name)
   );
 
-  deleteCardButton.addEventListener("click", () => openPopupConfirmationModal(item._id));
+  deleteCardButton.addEventListener("click", () =>
+    openPopupConfirmationModal(item._id)
+  );
 
   cardLikeButton.addEventListener("click", () =>
     handleLikeClick(item, userId, cardLikeButton, cardLikeCounter)

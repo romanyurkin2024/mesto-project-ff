@@ -26,11 +26,15 @@ const hasInvalidInput = (inputElements) => {
 function enableValidation(formConfig) {
   const formElements = document.querySelectorAll(formConfig.formSelector);
   formElements.forEach((formElement) => {
-    const buttonForm = formElement.querySelector(formConfig.submitButtonSelector);
-    const inputElements = formElement.querySelectorAll(formConfig.inputSelector);
-    
-    if(formElement.id !== "delete__card"){
-      disablePopupButton(buttonForm, formConfig.inactiveButtonClass) 
+    const buttonForm = formElement.querySelector(
+      formConfig.submitButtonSelector
+    );
+    const inputElements = formElement.querySelectorAll(
+      formConfig.inputSelector
+    );
+
+    if (formElement.id !== "delete__card") {
+      disablePopupButton(buttonForm, formConfig.inactiveButtonClass);
     }
 
     inputElements.forEach((inputElement) => {
@@ -43,8 +47,8 @@ function enableValidation(formConfig) {
           inputElement.setCustomValidity(inputElement.dataset.errorMessage);
         } else {
           inputElement.setCustomValidity("");
-        } 
-        
+        }
+
         if (!evt.target.validity.valid) {
           evt.target.classList.add(formConfig.inputErrorClass);
           showError(
