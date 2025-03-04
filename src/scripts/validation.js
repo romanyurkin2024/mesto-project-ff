@@ -28,7 +28,10 @@ function enableValidation(formConfig) {
   formElements.forEach((formElement) => {
     const buttonForm = formElement.querySelector(formConfig.submitButtonSelector);
     const inputElements = formElement.querySelectorAll(formConfig.inputSelector);
-    disablePopupButton(buttonForm, formConfig.inactiveButtonClass);
+    
+    if(formElement.id !== "delete__card"){
+      disablePopupButton(buttonForm, formConfig.inactiveButtonClass) 
+    }
 
     inputElements.forEach((inputElement) => {
       const errorElement = formElement.querySelector(
