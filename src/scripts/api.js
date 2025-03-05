@@ -1,3 +1,5 @@
+import { checkResponce } from "../utils/apiResponseHandler";
+
 const API_CONFIG = {
   baseUrl: `https://mesto.nomoreparties.co/v1/wff-cohort-33`,
   headers: {
@@ -6,24 +8,16 @@ const API_CONFIG = {
   },
 };
 
-function checkResponce(res) {
-  if (res.ok) {
-    return res.json();
-  }
-
-  return Promise.reject(`Упссс... Произошла ошибка: ${res.status}`);
-}
-
 function getInitialCards() {
   return fetch(`${API_CONFIG.baseUrl}/cards`, {
     headers: API_CONFIG.headers,
-  }).then((res) => checkResponce(res));
+  }).then(checkResponce);
 }
 
 function getUserData() {
   return fetch(`${API_CONFIG.baseUrl}/users/me`, {
     headers: API_CONFIG.headers,
-  }).then((res) => checkResponce(res));
+  }).then(checkResponce);
 }
 
 function updateProfile(name, about) {
@@ -34,7 +28,7 @@ function updateProfile(name, about) {
       name: name,
       about: about,
     }),
-  }).then((res) => checkResponce(res));
+  }).then(checkResponce);
 }
 
 function createNewCard(name, link) {
@@ -45,28 +39,28 @@ function createNewCard(name, link) {
       name: name,
       link: link,
     }),
-  }).then((res) => checkResponce(res));
+  }).then(checkResponce);
 }
 
 function deleteCard(cardId) {
   return fetch(`${API_CONFIG.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: API_CONFIG.headers,
-  }).then((res) => checkResponce(res));
+  }).then(checkResponce);
 }
 
 function likeCard(cardId) {
   return fetch(`${API_CONFIG.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: API_CONFIG.headers,
-  }).then((res) => checkResponce(res));
+  }).then(checkResponce);
 }
 
 function unlikeCard(cardId) {
   return fetch(`${API_CONFIG.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: API_CONFIG.headers,
-  }).then((res) => checkResponce(res));
+  }).then(checkResponce);
 }
 
 function changeAvatar(avatarLink) {
@@ -76,7 +70,7 @@ function changeAvatar(avatarLink) {
     body: JSON.stringify({
       avatar: avatarLink,
     }),
-  }).then((res) => checkResponce(res));
+  }).then(checkResponce);
 }
 
 export {
