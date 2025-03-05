@@ -45,11 +45,15 @@ const formConfig = {
   errorClass: "popup__error_visible",
 };
 
-getUserData().then((data) => {
-  profileTitle.textContent = data.name;
-  profileDescription.textContent = data.about;
-  profileImage.style.backgroundImage = `url(${data.avatar})`;
-});
+getUserData()
+  .then((data) => {
+    profileTitle.textContent = data.name;
+    profileDescription.textContent = data.about;
+    profileImage.style.backgroundImage = `url(${data.avatar})`;
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 popups.forEach((popup) => {
   addModalListeners(popup);
@@ -93,10 +97,14 @@ function handleDeleteCard(evt) {
   evt.preventDefault();
 
   const cardId = deleteCardFormElement.elements["card-id"].value;
-  deleteCard(cardId).then((res) => {
-    closeModal(evt.target.closest(".popup"));
-    renderCards();
-  });
+  deleteCard(cardId)
+    .then((res) => {
+      closeModal(evt.target.closest(".popup"));
+      renderCards();
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 }
 
 function handleProfileFormSubmit(evt) {
@@ -109,6 +117,9 @@ function handleProfileFormSubmit(evt) {
       profileDescription.textContent = jobInput.value;
       profileTitle.textContent = nameInput.value;
       closeModal(evt.target.closest(".popup"));
+    })
+    .catch((error) => {
+      console.log(error);
     })
     .finally(() => {
       renderButtonLoading(false, popupButton);
@@ -161,6 +172,9 @@ function handleAddCardFormSubmit(evt) {
       newCardFormElement.reset();
       closeModal(evt.target.closest(".popup"));
     })
+    .catch((error) => {
+      console.log(error);
+    })
     .finally(() => {
       renderButtonLoading(false, popupButton);
     });
@@ -172,20 +186,24 @@ deleteCardFormElement.addEventListener("submit", handleDeleteCard);
 newAvatarFormElement.addEventListener("submit", handleAddNewAvatar);
 
 function renderCards() {
-  Promise.all([getInitialCards(), getUserData()]).then((res) => {
-    const [cards, userData] = res;
-    placesList.innerHTML = "";
-    cards.forEach((item) => {
-      placesList.append(
-        createCard(item, userData._id, {
-          cardTemplate,
-          openPopupImageModal,
-          openPopupConfirmationModal,
-          handleLikeClick: handleLikeClick(likeCard, unlikeCard),
-        })
-      );
+  Promise.all([getInitialCards(), getUserData()])
+    .then((res) => {
+      const [cards, userData] = res;
+      placesList.innerHTML = "";
+      cards.forEach((item) => {
+        placesList.append(
+          createCard(item, userData._id, {
+            cardTemplate,
+            openPopupImageModal,
+            openPopupConfirmationModal,
+            handleLikeClick: handleLikeClick(likeCard, unlikeCard),
+          })
+        );
+      });
+    })
+    .catch((error) => {
+      console.log(error);
     });
-  });
 }
 
 renderCards();

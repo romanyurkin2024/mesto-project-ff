@@ -6,32 +6,24 @@ const API_CONFIG = {
   },
 };
 
+function checkResponce(res) {
+  if (res.ok) {
+    return res.json();
+  }
+
+  return Promise.reject(`Упссс... Произошла ошибка: ${res.status}`);
+}
+
 function getInitialCards() {
-  return fetch(`${API_CONFIG.baseUrl}/cards`, { headers: API_CONFIG.headers })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Упссс... Ошибка: ${res.status}`);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  return fetch(`${API_CONFIG.baseUrl}/cards`, {
+    headers: API_CONFIG.headers,
+  }).then((res) => checkResponce(res));
 }
 
 function getUserData() {
   return fetch(`${API_CONFIG.baseUrl}/users/me`, {
     headers: API_CONFIG.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Упссс... Пользователь не найден: ${res.status}`);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((res) => checkResponce(res));
 }
 
 function updateProfile(name, about) {
@@ -42,16 +34,7 @@ function updateProfile(name, about) {
       name: name,
       about: about,
     }),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Упссс... Ошибка: ${res.status}`);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((res) => checkResponce(res));
 }
 
 function createNewCard(name, link) {
@@ -62,65 +45,28 @@ function createNewCard(name, link) {
       name: name,
       link: link,
     }),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Упссс... Ошибка: ${res.status}`);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((res) => checkResponce(res));
 }
 
 function deleteCard(cardId) {
   return fetch(`${API_CONFIG.baseUrl}/cards/${cardId}`, {
     method: "DELETE",
     headers: API_CONFIG.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Упссс... Карточка не была удалена!`);
-    })
-    .catch((error) => {
-      alert(error);
-    });
+  }).then((res) => checkResponce(res));
 }
 
 function likeCard(cardId) {
   return fetch(`${API_CONFIG.baseUrl}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: API_CONFIG.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Упссс... Ошибка: ${res.status}`);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((res) => checkResponce(res));
 }
 
 function unlikeCard(cardId) {
   return fetch(`${API_CONFIG.baseUrl}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: API_CONFIG.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject(`Упссс... Ошибка: ${res.status}`);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((res) => checkResponce(res));
 }
 
 function changeAvatar(avatarLink) {
@@ -130,11 +76,7 @@ function changeAvatar(avatarLink) {
     body: JSON.stringify({
       avatar: avatarLink,
     }),
-  })
-    .then((res) => res.json())
-    .catch((error) => {
-      console.log(error);
-    });
+  }).then((res) => checkResponce(res));
 }
 
 export {
